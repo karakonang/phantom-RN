@@ -186,7 +186,7 @@ end subroutine update_externalforce
 !+
 !-----------------------------------------------------------------------
 subroutine accrete_particles(iexternalforce,xi,yi,zi,hi,mi,ti,accreted,i)
- use metric_tools, only:imet_minkowski,imet_schwarzschild,imet_kerr,imetric,imet_binarybh
+ use metric_tools, only:imet_minkowski,imet_schwarzschild,imet_kerr,imet_rn,imetric,imet_binarybh
  use part,         only:set_particle_type,iboundary,maxphase,maxp,igas,npartoftype
  use metric,       only:accrete_particles_metric
  integer, intent(in)    :: iexternalforce
@@ -202,7 +202,7 @@ subroutine accrete_particles(iexternalforce,xi,yi,zi,hi,mi,ti,accreted,i)
  case(imet_minkowski)
     if (first) print*,"WARNING: Accrete particles: but Metric = Minkowski"
 
- case(imet_schwarzschild,imet_kerr)
+ case(imet_schwarzschild,imet_kerr,imet_rn)
     r2 = xi*xi + yi*yi + zi*zi
     if (accradius1>accradius1_hard .and. r2 < accradius1**2 .and. maxphase==maxp .and. present(i)) then
        call set_particle_type(i,iboundary)
