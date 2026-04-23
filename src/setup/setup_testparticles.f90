@@ -36,7 +36,7 @@ module setup
  ! Module variables for setup parameters
  integer :: orbtype
  integer :: dumpsperorbit
- real :: spin
+ real :: spin, charge, test_mass
  real :: r
  real :: norbits
  real :: x0, y0, z0
