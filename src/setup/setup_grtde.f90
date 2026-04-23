@@ -44,11 +44,11 @@ module setup
 
  use setstar,        only:star_t
  use setorbit,       only:orbit_t
- use externalforces, only:mass1,a
+ use externalforces, only:mass1,a,charge_bh => charge
  implicit none
  public :: setpart
 
- real    :: mhole,beta,ecc_bh,norbits,theta_bh,sep_initial
+ real    :: mhole,charge,beta,ecc_bh,norbits,theta_bh,sep_initial
  real    :: x1,y1,z1,x2,y2,z2
  real    :: vx1,vy1,vz1,vx2,vy2,vz2
  integer :: dumpsperorbit,nstar
@@ -139,6 +139,7 @@ subroutine setpart(id,npart,npartoftype,xyzh,massoftype,vxyzu,polyk,gamma,hfact,
  mass_unit       = '1.e6*solarm'
  racc            = '6.'
  mhole           = 1.e6  ! (solar masses)
+ charge          = 0.
  call set_units(mass=mhole*solarm,c=1.d0,G=1.d0) !--Set central mass to M=1 in code units
  call set_defaults_stars(star)
  call set_defaults_orbit(orbit)
@@ -219,8 +220,9 @@ subroutine setpart(id,npart,npartoftype,xyzh,massoftype,vxyzu,polyk,gamma,hfact,
  if (ierr /= 0) call fatal('setup','could not convert racc to code units')
  accradius1 = accradius1_hard
 
- a        = 0.
- theta_bh = theta_bh*pi/180.
+ a         = 0.
+ charge_bh = charge
+ theta_bh  = theta_bh*pi/180.
 
  if (id==master) then
     print "(4(/,1x,a,1f10.3))",' black hole mass: ',mass1, &
@@ -381,6 +383,7 @@ subroutine write_setupfile(filename)
 
  write(iunit,"(/,a)") '# options for central object'
  call write_inopt(mhole,  'mhole', 'mass of black hole (solar mass)',  iunit)
+ call write_inopt(charge, 'charge', 'charge of black hole', iunit)
  call write_inopt(racc, 'racc', 'accretion radius for the central object (code units or e.g. 1*km)', iunit)
  call write_options_stars(star,relax,write_profile,ieos,iunit,nstar)
 
@@ -441,6 +444,7 @@ subroutine read_setupfile(filename,ierr)
  !--read black hole mass in solar masses
  !
  call read_inopt(mhole,'mhole',db,min=0.,errcount=nerr)
+ call read_inopt(charge,'charge',db,errcount=nerr)
  call read_inopt(racc, 'racc', db,errcount=nerr)
  mass1 = mhole*solarm/umass
  !
