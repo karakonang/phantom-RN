@@ -36,7 +36,7 @@ module setup
  ! Module variables for setup parameters
  integer :: orbtype
  integer :: dumpsperorbit
- real :: spin, charge, test_mass
+ real :: spin, charge
  real :: r
  real :: norbits
  real :: x0, y0, z0
@@ -91,7 +91,6 @@ call set_units(mass=solarm,G=1.d0,c=1.d0)
 orbtype = 1
 spin = 0.
 charge = 0.
-test_mass = 1.e-10
 r = 10.
 norbits = 1.
 dumpsperorbit = 100
@@ -129,7 +128,7 @@ alpha     = 0.
 alphamax  = 0.
 alphau    = 0.
 beta      = 0.
-massoftype     = test_mass
+massoftype     = 1.e-10
 npartoftype(:) = 0
 npartoftype(1) = npart
 
@@ -237,7 +236,6 @@ subroutine write_setupfile(filename)
  call write_inopt(orbtype,'orbtype','orbit type (1=circle, 2=precession, 3=epicycle, 4=vertical-oscillation, 0=custom)',iunit)
  call write_inopt(spin,'spin','black hole spin',iunit)
  call write_inopt(charge,'charge','black hole charge',iunit)
- call write_inopt(test_mass,'test_mass','test particle mass',iunit)
  select case(orbtype)
  case(1,3,4) ! circular, epicycle, vertical oscillation
     call write_inopt(r,'r','initial radius r in spherical coordinates',iunit)
@@ -278,7 +276,6 @@ subroutine read_setupfile(filename,ierr)
  call read_inopt(orbtype,'orbtype',db,min=0,max=4,errcount=nerr)
  call read_inopt(spin,'spin',db,min=-1.,max=1.,errcount=nerr)
  call read_inopt(charge,'charge',db,errcount=nerr)
- call read_inopt(test_mass,'test_mass',db,errcount=nerr)
  select case(orbtype)
  case(1,3,4) ! circular, epicycle, vertical oscillation
     call read_inopt(r,'r',db,min=0.,errcount=nerr)
@@ -315,7 +312,6 @@ subroutine setup_interactive()
     call prompt('black hole spin',spin,-1.,1.)
     call prompt('black hole charge',charge)
  endif
- call prompt('test particle mass',test_mass)
  call prompt('select orbit type (1=circle, 2=precession, 3=epicycle, 4=vertical-oscillation, 0=custom)',orbtype,0,4)
  select case(orbtype)
  case(1,3,4) ! circular, epicycle, vertical oscillation
