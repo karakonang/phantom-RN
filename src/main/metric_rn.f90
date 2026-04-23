@@ -166,7 +166,7 @@ pure subroutine metric_cartesian_derivatives(position,dgcovdx, dgcovdy, dgcovdz)
  real,    intent(in)  :: position(3)
  real,    intent(out) :: dgcovdx(0:3,0:3), dgcovdy(0:3,0:3), dgcovdz(0:3,0:3)
  real :: x,y,z,r,r2,r3,r4,r5,rs_on_r3,x2,y2,z2,rs2
- real :: rs, charge2
+ real :: rs
  rs = 2.*mass1
 
  dgcovdx = 0.
@@ -180,12 +180,12 @@ pure subroutine metric_cartesian_derivatives(position,dgcovdx, dgcovdy, dgcovdz)
  z2= z**2
  r2 = dot_product(position,position)
  r  = sqrt(r2)
+ r = max(r, tiny(r))
  r3 = r*r2
  r4 = r2*r2
  r5 = r*r4
 
  rs_on_r3 = rs/r3
- rs2 = rs**2
 
  !  dx
       dgcovdx(0,0) = x*(2*charge**2 - r*rs)/r**4
@@ -306,6 +306,7 @@ pure subroutine metric_spherical_derivatives(position,dgcovdr, dgcovdtheta, dgco
  charge2 = charge**2
 
  r = position(1)
+ r = max(r, tiny(r))
  theta = position(2)
  
  r2 = r*r
