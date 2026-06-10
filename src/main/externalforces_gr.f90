@@ -333,38 +333,10 @@ end subroutine read_options_externalforces
 subroutine initialise_externalforces(iexternalforce,ierr)
  use io,    only:error
  use units, only:G_is_unity,c_is_unity,get_G_code,get_c_code
- use metric_tools, only:imetric,imet_rn
- use metric,       only:mass1,charge
  integer, intent(in)  :: iexternalforce
  integer, intent(out) :: ierr
- real :: r_plus
 
  ierr = 0
-
- !
- !--Reissner-Nordstrom metric accretion check based on charge-to-mass ratio
- !
- if (imetric == imet_rn) then
-    if (mass1 > 0.0) then
-       if (charge <= mass1) then
-          r_plus = mass1 + sqrt(mass1**2 - charge**2)
-          accradius1 = 1.1 * r_plus
-          accradius1_hard = accradius1
-          print *, 'Reissner-Nordstrom metric: BH regime (charge/mass = ', charge/mass1, ')'
-          print *, '--> Setting Event Horizon as accretion radius: ', accradius1
-       else
-          accradius1 = 0.0
-          accradius1_hard = 0.0
-          print *, 'Reissner-Nordstrom metric: Naked Singularity regime (charge/mass = ', charge/mass1, ')'
-          print *, '--> Disabling accretion: accradius1 = 0.0'
-       endif
-    else
-       accradius1 = 0.0
-       accradius1_hard = 0.0
-       print *, 'Reissner-Nordstrom metric: Zero mass'
-       print *, '--> Disabling accretion: accradius1 = 0.0'
-    endif
- endif
 
  !
  !--check that G=1 in code units
