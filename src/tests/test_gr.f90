@@ -339,7 +339,7 @@ subroutine test_combinations(ntests,npass)
  integer :: i,j,k,l,m,n,ii,jj
  integer :: ncheck_metric,nfail_metric,ncheck_cons2prim,nfail_cons2prim
  integer :: ncheckg,nfailg,ncheckd,nfaild
- real, parameter :: tol = 1.e-14
+ real, parameter :: tol = 2.e-15
  real, parameter :: tolc = 1.e-12
  real, parameter :: told = 4.e-7
 
