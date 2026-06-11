@@ -439,7 +439,6 @@ subroutine read_options_metric(db,nerr)
  call read_inopt(mass1,'mass1',db,errcount=nerr,min=0.,max=1.e12)
  if (mass1 <= tiny(mass1)) call warn('metric','black hole mass: mass1 = 0')
  call read_inopt(charge,'charge',db,errcount=nerr,min=0.,max=1.e12)
- if (charge <= tiny(charge)) call warn('metric','black hole charge: charge = 0')
 
 end subroutine read_options_metric
 
