@@ -22,7 +22,7 @@ module metric
 !
  implicit none
  character(len=*), parameter :: metric_type = 'RN'
- integer,          parameter :: imetric     = 4
+ integer,          parameter :: imetric     = 8
 
  real, public :: mass1 = 1.       ! mass of central object
  real, public :: a     = 0.       ! spin of central object
